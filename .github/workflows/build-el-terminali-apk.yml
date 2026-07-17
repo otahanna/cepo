@@ -5,7 +5,13 @@ on:
     branches:
       - el-terminali-apk-v1
     paths:
-      - el-terminali-apk/BUILD_READY
+      - 'el-terminali-apk/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'el-terminali-apk/**'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -51,8 +57,10 @@ jobs:
           name: CEPO_EL_TERMINALI_V1
           path: CEPO_EL_TERMINALI_V1.apk
           if-no-files-found: error
+          retention-days: 30
 
       - name: Publish APK release
+        if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
